@@ -13,7 +13,7 @@ public class MyThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            System.out.println(System.currentTimeMillis() + " Thread: " + name);
+            System.out.println(System.currentTimeMillis() + " " + name);
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
