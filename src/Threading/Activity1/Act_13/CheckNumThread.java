@@ -1,19 +1,22 @@
 package Threading.Activity1.Act_13;
 
-public class CheckNumThread implements Runnable{
+public class CheckNumThread extends Thread {
 
     @Override
     public void run() {
-        int count = 10;
-        for (int i = count; i > 0; i--) {
-            System.out.println(i);
+        while (true) {
+            if (GenNumThread.flag = true) {
+                if (GenNumThread.year % 4 == 0 & GenNumThread.year % 100 != 0) {
+                    System.out.println(Thread.currentThread().getName() + ": " + GenNumThread.year + " is a leap year");
+                } else {
+                    System.out.println(Thread.currentThread().getName() + ": " + GenNumThread.year + " is not a leap year");
+                }GenNumThread.flag = false;
+            }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(GenNumThread.sleep);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        System.out.println("Hết giờ");
     }
 }
