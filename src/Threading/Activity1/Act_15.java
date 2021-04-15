@@ -9,8 +9,8 @@ public class Act_15 {
         WithdrawThread atm = new WithdrawThread(bankAccount, 5000);
         card.setName("Card");
         atm.setName("ATM");
-        card.start();
         atm.start();
+        card.start();
     }
 
 }
@@ -28,13 +28,11 @@ class BankAccount {
             if (withdrawAmount <= amount) {
                 amount = amount - withdrawAmount;
                 System.out.println(System.currentTimeMillis() + " : " + threadName + " withdraw successfully");
-//                System.out.println(System.currentTimeMillis() + " The amount remaining in your account is " + amount + "$" + "\n- - - - - - -");
             } else {
                 System.out.println(System.currentTimeMillis() + " : " + threadName + " withdraw failed !\n          The amount in your account is not enough ");
-
             }
+            System.out.println(System.currentTimeMillis() + " : The amount remaining in your account is " + amount + "$" + "\n- - - - - - -");
         }
-        System.out.println(System.currentTimeMillis() + " The amount remaining in your account is " + amount + "$" + "\n- - - - - - -");
     }
 }
 
