@@ -1,74 +1,71 @@
 package code.controller;
 
 import code.connection.DBConnection;
+import code.model.Book;
+import code.model.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import sun.security.util.Password;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/homebook")
 public class Act_41 {
     //    Activity 41: Viết API cho màn hình register và màn hình login theo Logic sau
     @PostMapping(value = "/register")   //API Register
-    public String register(@RequestBody User regRequest) throws Exception {
-        String PhoneNumber = "0327222822";
-        String Password = "12345678";
-        String Email = "abs17@gmail.com";
-
-        if (regRequest.getPassword().length() >= 8 && regRequest.getEmail().endsWith("@gmail.com") && regRequest.getPhoneNumber().length() >= 10) {
-            //            Connection conn = DBConnection.getDBConnection();
-            DBConnection db = DBConnection.getInstance();
-            Connection con = db.getDBConnection();
-            String query = "Select email from users";
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(query);
-            while (rs.next()) {
-                if (Email.matches(regRequest.getEmail())) {
-                    System.out.println("Email already exists : " + regRequest.getEmail());
-                    return "Email already exists";
-                } else {
+    public String register(@RequestBody User regisRequest) throws Exception {
+        DBConnection db = DBConnection.getInstance();
+        Connection con = db.getDBConnection();
+        String query = "Select count(*) as C_email from spring.users where email ='" + regisRequest.getEmail() + "'";
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query);
+        while (rs.next()) {
+            Integer C_email = rs.getInt("C_email");
+            if (C_email == 0) {
+                if (regisRequest.getPassword().length() >= 8 && regisRequest.getEmail().endsWith("@gmail.com")
+                        && regisRequest.getPhoneNumber().length() == 10) {
                     String insert = "INSERT INTO `spring`.`users` (`phone_number`, `password`, `email`) " +
-                            "VALUES ('" + regRequest.getPhoneNumber() + "', '" + regRequest.getPassword() + "', '" + regRequest.getEmail() + "');";
+                            "VALUES ('" + regisRequest.getPhoneNumber() + "', '" + regisRequest.getPassword() + "', '" + regisRequest.getEmail() + "');";
                     st.executeUpdate(insert);
                     System.out.println("Successfully inserted user information ");
+                    regisRequest.setPassword("********");
                     return "Sign up success";
+                } else if (regisRequest.getPhoneNumber().length() != 10) {
+                    return "Phone number must contain at least 10 numbers: " + regisRequest.getPhoneNumber();
+                } else if (regisRequest.getPassword().length() < 8) {
+                    return "Password must contain at least 8 characters";
+                } else if (!(regisRequest.getEmail().endsWith("@gmail.com"))) {
+                    return "Email must contain '@gmail.com' : " + regisRequest.getEmail();
                 }
+            } else if (C_email == 1) {
+                System.out.println("Email already exists ");
+                return "Email already exists: " + regisRequest.getEmail();
             }
-        } else if (regRequest.getPhoneNumber().length() < 10) {
-            return "Phone number must contain at least 10 numbers: " + regRequest.getPhoneNumber();
-        } else if (regRequest.getPassword().length() < 8) {
-            return "Password must contain at least 8 characters";
-        } else if (!(regRequest.getEmail().endsWith("@gmail.com"))) {
-            return "Email must contain '@gmail.com' : " + regRequest.getEmail();
         }
         return null;
     }
 
-
     @PostMapping(value = "/login")   //API Login
-    public String login(@RequestBody User logRequest) throws Exception {
-        String PhoneNumber = "0327222822";
-        String Password = "12345678";
-
+    public String login(@RequestBody User loginRequest) throws Exception {
         DBConnection db = DBConnection.getInstance();
         Connection con = db.getDBConnection();
-        String query = "Select phone_number from users";
+        String query = "Select count(*) from users where phone_number = '" + loginRequest.getPhoneNumber() + "'";
         Statement st = con.createStatement();
         ResultSet rs = st.executeQuery(query);
         while (rs.next()) {
-            if (!(logRequest.getPhoneNumber().matches(PhoneNumber))) {
-                System.out.println("Phone number not exists ");
-                return "Phone number not exists";
-            } else if (PhoneNumber.matches(logRequest.getPhoneNumber()) && Password.matches(logRequest.getPassword())) {
-                System.out.println("User login successfully");
-                return "Login success";
+            String phone_number = rs.getString("phone_number");
+            String password = rs.getString("password");
+            if (phone_number != loginRequest.getPhoneNumber()) {
+                System.out.println("Phone number is not exists ");
+                return "Phone number is not exists";
+            } else if (phone_number == loginRequest.getPhoneNumber() && password == loginRequest.getPassword()) {
+                System.out.println("Login success");
+                return "You've successfully logged in";
             } else {
                 System.out.println("Login failed");
                 return "Wrong phone number or password!";
@@ -76,12 +73,9 @@ public class Act_41 {
         }
         return null;
     }
-}
 
-@Getter
-@Setter
-class User {
-    private String phoneNumber;
-    private String password;
-    private String email;
+    @GetMapping(value = "/book/{category_id}") //API
+    public List<Book> getCategories(@PathVariable(value = "category_id") Integer category_id) {
+        return null;
+    }
 }
