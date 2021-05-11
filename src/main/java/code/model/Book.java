@@ -8,5 +8,5 @@ public class Book {
     private String book_name;
     private Integer category_id;
     private String author;
-
+    private Float price;
 }
