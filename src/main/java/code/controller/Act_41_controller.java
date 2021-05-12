@@ -12,8 +12,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 @RestController
-@RequestMapping(value = "/homebook")
-public class Act_41 {
+@RequestMapping(value = "/user")
+public class Act_41_controller {
     //    Activity 41: Viết API cho màn hình register và màn hình login theo Logic sau
 
     @Autowired
