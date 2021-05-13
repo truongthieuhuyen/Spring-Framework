@@ -19,10 +19,15 @@ public class BookService {
     @Autowired
     Connection connection;
 
-    public BookListResponse getBookByCategory(Integer category_id, String oderBy, String order) {
+    public BookListResponse getBookByCategory(Integer category_id, String orderBy, String order) {
         BookListResponse response = new BookListResponse();
+        if (!order.equals("ASC") && !order.equals("DESC")) {
+            response.setCode(-1);
+            response.setMessage("Order value is not valid");
+            return response;
+        }
         List<Book> data = null;
-        String query = "select * from spring.books where category_id ='" + category_id + "' order by " + oderBy + " " + order + ";";
+        String query = "select * from spring.books where category_id ='" + category_id + "' order by " + orderBy + " " + order + ";";
         try {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -33,16 +38,18 @@ public class BookService {
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 Float price = rs.getFloat("price");
-                Book item = new Book(title,author,price);
+                Book item = new Book(title, author, price);
                 data.add(item);
             }
             response.setData(data);
             response.setCode(200);
             response.setMessage("Success");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return response;
     }
+
 
 }
