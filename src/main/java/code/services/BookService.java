@@ -35,10 +35,11 @@ public class BookService {
                 if (data == null) {// data =null --> khởi tạo mới
                     data = new ArrayList<>();
                 }
+                Integer id = rs.getInt("book_id");// check lai column_name trong database
                 String title = rs.getString("title");
                 String author = rs.getString("author");
                 Float price = rs.getFloat("price");
-                Book item = new Book(title, author, price);
+                Book item = new Book(id,title, author, price);
                 data.add(item);
             }
             response.setData(data);
