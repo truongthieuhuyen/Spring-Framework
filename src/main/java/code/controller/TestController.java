@@ -53,10 +53,10 @@ public class TestController {
         return "redirect:/bookList";
     }
 
-    @GetMapping(value = "/bookDetail")
-    public String getBookDetail( @RequestParam("id") Integer id) {
-        Book book = books.get(id);
-        return "bookDetail";
-    }
+//    @GetMapping(value = {"/bookDetail"})
+//    public String getBookDetail( @RequestParam("id") Integer id) {
+//        Book book = books.get(id);
+//        return "bookDetail";
+//    }
 
 }

@@ -16,7 +16,9 @@ public class UserService {
     @Autowired
     Connection connection;
 
-    //API Register
+    /*
+     * API Register
+     * */
     public String register(RegisterRequest register) {
         //check phone
         if (register.getPhoneNumber() == null || register.getPhoneNumber() == "" || register.getPhoneNumber().length() != 10) {
@@ -49,7 +51,9 @@ public class UserService {
         return "Register successful";
     }
 
-    //API Login
+    /*
+     * API login
+     */
     public String login(LoginRequest login) {
         if (login.getPhoneNumber().isEmpty() || login.getPassword().isEmpty()) {
             return "Please enter your password and phone number ";

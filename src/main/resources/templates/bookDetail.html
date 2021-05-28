@@ -7,21 +7,12 @@
 </head>
 <body>
 <h1>Book Description</h1>
-<h2 th:utext="${book.title}"></h2>
-<!--<table>-->
-<!--    <tr>-->
-<!--        <td>ID</td>-->
-<!--        <td>Title</td>-->
-<!--        <td>Author</td>-->
-<!--        <td>Price($)</td>-->
-<!--    </tr>-->
-<!--    <tr >-->
-<!--        <td><a th:href="@{/bookDetail(id=${book.id})}" th:text="${book.id}"></a></td>-->
-<!--        <td th:text="${book.title}"></td>-->
-<!--        <td th:text="${book.author}"></td>-->
-<!--        <td th:text="${book.price}"></td>-->
-
-<!--    </tr>-->
-<!--</table>-->
+<h2 th:href="@{/bookDetail(id=${book.id})}" th:text="${book.id}"></h2>
+<br/>
+<h2 th:text="${book.title}"></h2>
+<br/>
+<h2 th:text="${book.author}"></h2>
+<br/>
+<h2 th:text="${book.price}"></h2>
 </body>
 </html>
