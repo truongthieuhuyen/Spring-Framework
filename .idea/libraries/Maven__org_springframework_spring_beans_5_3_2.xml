@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/5.3.2/spring-beans-5.3.2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/5.3.6/spring-beans-5.3.6.jar!/" />
     </SOURCES>
   </library>
 </component>

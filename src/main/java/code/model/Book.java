@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter@Setter
 public class Book {
-    private int id;
+    private int book_id;
     private String title;
 //    private Integer category_id;
     private String author;
     private Float price;
 
-    public Book(int id,String title, String author, Float price) {
-        this.id = id;
+    public Book(int book_id, String title, String author, Float price) {
+        this.book_id = book_id;
         this.title  = title;
         this.author = author;
         this.price = price;
