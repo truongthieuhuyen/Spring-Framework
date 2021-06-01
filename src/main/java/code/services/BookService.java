@@ -12,7 +12,6 @@ import java.util.List;
 public class BookService {
 
     @Autowired
-//    Connection connection;
     BookRepository bookRepository;
 
     public BookListResponse getBookByCategory(Integer categoryId, String orderBy, String order) {
