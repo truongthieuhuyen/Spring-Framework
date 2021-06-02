@@ -31,8 +31,8 @@ public class BookEntity {
     @Column(name = "book_author")
     private String author;
 
-    @Column(name = "book_price")
-    private Integer price;
+    @Column(name = "book_price_$")
+    private Double price;
 
     @Column(name = "category_id")
     private Integer categoryId;

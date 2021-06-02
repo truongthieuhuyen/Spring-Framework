@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     //    UserEntity findByPhoneNumberAndPassword(String phoneNumber, String password);
     UserEntity findUserByUserId(Integer userId);
     UserEntity findUserByPhoneNumber(String phoneNumber);
+    UserEntity findUserByEmail(String email);
 
     @Query (nativeQuery = true, value = "SELECT * FROM user WHERE user_id=?1 ")
     UserEntity findByUserId(Integer userId);
@@ -25,12 +26,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = :phoneNumber ;")
     String findByPhoneNumberParam(@Param(value = "phoneNumber") String phoneNumber);
 
-    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = '?1' and user_password = '?2';")
+    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = ?1 and user_password = ?2 ;")
     String findUserByPhoneNumberAndPassword( String phoneNumber, String password);
 
+    //câu query update luôn
     @Transactional
     @Modifying
-    String updateUserInfo();
+    @Query(nativeQuery = true, value = "UPDATE user SET user_password = ?1 WHERE user_id = ?2")
+    int updateUsingNativeModify(String password, Integer userId);
 
 }
 
