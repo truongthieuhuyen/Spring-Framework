@@ -13,12 +13,10 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findAllByUserId(Integer userId);
-    List<UserEntity> findAllByPhoneNumberAndPassword(String phoneNumber, String password);
 
     //    UserEntity findByPhoneNumberAndPassword(String phoneNumber, String password);
     UserEntity findUserByUserId(Integer userId);
     UserEntity findUserByPhoneNumber(String phoneNumber);
-    UserEntity findUserByEmail(String email);
 
     @Query (nativeQuery = true, value = "SELECT * FROM user WHERE user_id=?1 ")
     UserEntity findByUserId(Integer userId);
@@ -30,10 +28,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     String findUserByPhoneNumberAndPassword( String phoneNumber, String password);
 
     //câu query update luôn
-    @Transactional
-    @Modifying
-    @Query(nativeQuery = true, value = "UPDATE user SET user_password = ?1 WHERE user_id = ?2")
-    int updateUsingNativeModify(String password, Integer userId);
+//    @Transactional
+//    @Modifying
+//    @Query(nativeQuery = true, value = "UPDATE user SET user_password = ?1 WHERE user_id = ?2")
+//    int updateUsingNativeModify(String password, Integer userId);
 
 }
 

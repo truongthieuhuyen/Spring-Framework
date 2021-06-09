@@ -58,9 +58,10 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `thieuhuyen`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `user_phone` VARCHAR(45) NULL DEFAULT NULL,
-  `user_email` VARCHAR(45) NULL DEFAULT NULL,
-  `user_password` VARCHAR(45) NULL DEFAULT NULL,
+  `user_name` VARCHAR(25) NOT NULL ,
+  `user_phone` VARCHAR(45) NOT NULL ,
+  `user_email` VARCHAR(45) NOT NULL ,
+  `user_password` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) )
 ENGINE = InnoDB

@@ -22,8 +22,8 @@ public class UserService {
      * */
     public String registerService(RegisterRequest regisRequest) {
         //check valid phone
-        if (regisRequest.getPhoneNumber() == null || regisRequest.getPhoneNumber() == "" || regisRequest.getPhoneNumber().length() != 10) {
-            return "Invalid phone number";
+        if (regisRequest.getPhoneNumber() == null || regisRequest.getPhoneNumber().isEmpty() || regisRequest.getPhoneNumber().length() != 10) {
+            return "Invalid phone number"; // dùng regex
         }
         //check valid email
         if (!StringUtils.hasText(regisRequest.getEmail()) || !regisRequest.getEmail().endsWith("@gmail.com")) {
@@ -68,6 +68,7 @@ public class UserService {
     /*
      * change password
      * */
+
     public String changePass(ChangePasswordRequest changePassReq) {
         // Find user in DB
         UserEntity cp = userRepository.findUserByPhoneNumber(changePassReq.getPhoneNumber());
@@ -89,7 +90,7 @@ public class UserService {
         UserEntity du = userRepository.findUserByUserId(userId);
         if (du != null) {
             userRepository.delete(du);
-            return "Deleted user";
+            return "User has been deleted";
         }
         return "User does not exist ";
     }
