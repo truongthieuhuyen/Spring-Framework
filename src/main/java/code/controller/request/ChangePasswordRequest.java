@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ChangePasswordRequest {
 //    private Integer userId;
-    private String phoneNumber;
+    private String phoneNumber;// khong can thiet
     private String password;
 }

@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -26,7 +26,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
     @Query(nativeQuery = true, value = "select * from book where book_name = :title and book_author = :author ")
     List<BookEntity> findAllBookByTitleAndAuthor(@Param("title") String title,
                                                  @Param("author") String author);
-
+    @Transactional
     @Modifying
     @Query(nativeQuery = true,value = "delete from book where book_id = ?1 ;")
     void delete(Integer bookId);

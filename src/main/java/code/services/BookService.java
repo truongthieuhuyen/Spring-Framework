@@ -24,6 +24,9 @@ public class BookService {
     @Autowired
     PublishedBookRepository publishedBookRepository;
 
+    /*
+     * find book by name
+     * */
     public BookListResponse getBookByTitle(String title, String orderBy, String order, Integer pageNum) {
         /*Sort sort = Sort.by(Sort.Direction.ASC, orderBy);
         if (order.equals("DESC")) {
@@ -44,6 +47,9 @@ public class BookService {
         return response;
     }
 
+    /*
+    add new book
+    * */
     public String addNewBookService(AddBookRequest requests, Integer userId) {
         List<BookEntity> search = bookRepository.findAllBookByTitleAndAuthor(requests.getTitle(), requests.getAuthor());
         if (!search.isEmpty()) {
@@ -70,20 +76,22 @@ public class BookService {
         return "Added books to the library :" + item.getTitle();
     }
 
+    /*
+     * Update book
+     * */
     @Transactional
-    public String updateBookService(BookEntity bookEntity, Integer userId) {
+    public String updateBookService(String description, String picture, Double price, Integer categoryId, Integer bookId , Integer userId) {
         //check in DB
-        List<PublishedBookEntity> ub = publishedBookRepository.findAllByTitleAndUserId(bookEntity.getTitle(), userId);
-
+        List<PublishedBookEntity> ub = publishedBookRepository.findAllByBookIdAndUserId(bookId, userId);
         if (ub == null) {
             return "You don't have access to do this";
         }
-        publishedBookRepository.updateBookUsingNativeModify(bookEntity.getTitle(), bookEntity.getDescription(), bookEntity.getAuthor(), bookEntity.getPrice(), bookEntity.getYear(), bookEntity.getPicture(), bookEntity.getCategoryId(), bookEntity.getBookId());
-
+        //dung thu ham save
+        publishedBookRepository.updateBookUsingNativeModify(description, price, picture, categoryId, bookId);
         return "Book has been updated";
     }
 
-    /*
+    /* Delete book
      * 1. delete in published_book table first
      * 2. delete in book table */
     @Transactional

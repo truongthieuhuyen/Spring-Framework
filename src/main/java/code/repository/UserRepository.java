@@ -16,16 +16,20 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     //    UserEntity findByPhoneNumberAndPassword(String phoneNumber, String password);
     UserEntity findUserByUserId(Integer userId);
+
     UserEntity findUserByPhoneNumber(String phoneNumber);
 
-    @Query (nativeQuery = true, value = "SELECT * FROM user WHERE user_id=?1 ")
+    @Query(nativeQuery = true, value = "SELECT * FROM user WHERE user_id=?1 ")
     UserEntity findByUserId(Integer userId);
 
-    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = :phoneNumber ;")
-    String findByPhoneNumberParam(@Param(value = "phoneNumber") String phoneNumber);
+    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = :phoneNumber or user_email = :email ;")
+    String findByPhoneNumberOrEmailParam(@Param(value = "phoneNumber") String phoneNumber,
+                                         @Param(value = "email") String email);
 
     @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = ?1 and user_password = ?2 ;")
-    String findUserByPhoneNumberAndPassword( String phoneNumber, String password);
+    String findUserByPhoneNumberAndPassword(String phoneNumber, String password);
+
+    UserEntity findUserByName(String name);
 
     //câu query update luôn
 //    @Transactional

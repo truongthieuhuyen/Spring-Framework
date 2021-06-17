@@ -1,9 +1,7 @@
 package code.controller;
 
 import code.controller.request.AddBookRequest;
-import code.controller.request.UpdateBookRequest;
 import code.controller.response.BookListResponse;
-import code.entity.BookEntity;
 import code.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +26,8 @@ public class BookController {
     }
 
     @PutMapping(value = "/updateBook")
-    public String updateBook(@RequestBody BookEntity entity, Integer userId) {
-        return bookService.updateBookService(entity,userId);
+    public String updateBook( String description, String picture, Double price,@RequestBody Integer categoryId, Integer bookId, Integer userId) {
+        return bookService.updateBookService(description,picture,price,categoryId,bookId,userId);
     }
 //    @PostMapping(value = "/testAddBook")
 //    public String testNewBook(String title, String author) {

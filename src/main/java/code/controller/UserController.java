@@ -26,10 +26,8 @@ public class UserController {
         return result;
     }
 
-    @PutMapping(value = "/changePass/{user_phone}")
-    public String changePass(@PathVariable(value = "user_phone") String phoneNumber,
-                             @RequestBody ChangePasswordRequest changePassReq) {
-
+    @PutMapping(value = "/changePass")
+    public String changePass( @RequestBody ChangePasswordRequest changePassReq) {
         return userService.changePass(changePassReq);
     }
 
@@ -39,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{user_id}")
-    public Object getUserDetail(@PathVariable(value = "user_id") Integer userId) throws Exception{
+    public Object getUserDetail(@PathVariable(value = "user_id") Integer userId) throws Exception {
         UserInfoResponse show = userService.getUserInfo(userId);
         return show;
     }
