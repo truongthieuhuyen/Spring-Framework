@@ -27,4 +27,10 @@ public class UserEntity {
     @Column(name = "user_name")
     private String name;
 
+    @Column(name = "role_name")
+    private String role;
+
+    @Column(name = "token")
+    private String token;
+
 }

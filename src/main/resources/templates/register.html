@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<form th:action="@{/register}"
+<form th:action="@{/register_backend}"
       th:object="${registerForm}" method="POST">
     Phone number:
     <input type="text" th:field="*{phoneNumber}"/>

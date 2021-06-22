@@ -14,7 +14,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findAllByUserId(Integer userId);
 
-    //    UserEntity findByPhoneNumberAndPassword(String phoneNumber, String password);
     UserEntity findUserByUserId(Integer userId);
 
     UserEntity findUserByPhoneNumber(String phoneNumber);
@@ -26,8 +25,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     String findByPhoneNumberOrEmailParam(@Param(value = "phoneNumber") String phoneNumber,
                                          @Param(value = "email") String email);
 
-    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_phone = ?1 and user_password = ?2 ;")
-    String findUserByPhoneNumberAndPassword(String phoneNumber, String password);
+    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_email = ?1 and user_password = ?2 ;")
+    String findUserByEmailAndPassword(String email, String password);
 
     UserEntity findUserByName(String name);
 

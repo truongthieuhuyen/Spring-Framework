@@ -25,7 +25,6 @@ public interface PublishedBookRepository extends JpaRepository<PublishedBookEnti
 
     List<PublishedBookEntity> findByPublishedId(Integer publishedId);
 
-    @Transactional
     @Modifying
     @Query(nativeQuery = true,value = "delete from published_book where published_id = ?1 ;")
     void delete(Integer publishedId);

@@ -6,14 +6,19 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<form th:action="@{/login}"
+<h3>Enter your email and password</h3>
+<form th:action="@{/login_backend}"
       th:object="${loginForm}" method="POST">
-    Phone number:
-    <input type="text" th:field="*{phoneNumber}"/>
+    Email:
+    <input type="text" name="email" th:field="*{email}"/>
     <br/>
     Password:
-    <input type="text" th:field="*{password}"/>
+    <input type="text" name="password" th:field="*{password}"/>
     <br/>
+    Remember me?
+    <input type="checkbox" name="remember_me">
+    <br>
+
     <input type="submit" value="Login"/>
 </form>
 </body>

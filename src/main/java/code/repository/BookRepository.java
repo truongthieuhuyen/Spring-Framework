@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Integer> {
-    /*SELECT * FROM book WHERE category_id= ;*/
     List<BookEntity> findAllBy(String title, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select * from book where book_name like %:title% order by :orderBy :order limit 2 offset :offset")
@@ -26,7 +25,7 @@ public interface BookRepository extends JpaRepository<BookEntity, Integer> {
     @Query(nativeQuery = true, value = "select * from book where book_name = :title and book_author = :author ")
     List<BookEntity> findAllBookByTitleAndAuthor(@Param("title") String title,
                                                  @Param("author") String author);
-    @Transactional
+
     @Modifying
     @Query(nativeQuery = true,value = "delete from book where book_id = ?1 ;")
     void delete(Integer bookId);

@@ -1,41 +1,41 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <title>Add Book</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
-</head>
-<body>
-<h1>Create a Book:</h1>
+<!--<!DOCTYPE HTML>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8" />-->
+<!--    <title>Add Book</title>-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Create a Book:</h1>-->
 
-<!--
-   In Thymeleaf the equivalent of
-   JSP's ${pageContext.request.contextPath}/edit.html
-   would be @{/edit.html}
-   -->
+<!--&lt;!&ndash;-->
+<!--   In Thymeleaf the equivalent of-->
+<!--   JSP's ${pageContext.request.contextPath}/edit.html-->
+<!--   would be @{/edit.html}-->
+<!--   &ndash;&gt;-->
 
-<form th:action="@{/addBook}"
-      th:object="${bookForm}" method="POST">
-    Title:
-    <input type="text" th:field="*{title}" />
-    <br/>
-    Author:
-    <input type="text" th:field="*{author}" />
-    <br/>
-    Price:
-    <input type="text" th:field="*{price}" />
-    <br/>
-    <input type="submit" value="Create" />
-</form>
+<!--<form th:action="@{/addBook}"-->
+<!--      th:object="${bookForm}" method="POST">-->
+<!--    Title:-->
+<!--    <input type="text" th:field="*{title}" />-->
+<!--    <br/>-->
+<!--    Author:-->
+<!--    <input type="text" th:field="*{author}" />-->
+<!--    <br/>-->
+<!--    Price:-->
+<!--    <input type="text" th:field="*{price}" />-->
+<!--    <br/>-->
+<!--    <input type="submit" value="Create" />-->
+<!--</form>-->
 
-<br/>
+<!--<br/>-->
 
-<!-- Check if errorMessage is not null and not empty -->
+<!--&lt;!&ndash; Check if errorMessage is not null and not empty &ndash;&gt;-->
 
-<div th:if="${errorMessage}" th:utext="${errorMessage}"
-     style="color:red;font-style:italic;">
-    ...
-</div>
+<!--<div th:if="${errorMessage}" th:utext="${errorMessage}"-->
+<!--     style="color:red;font-style:italic;">-->
+<!--    ...-->
+<!--</div>-->
 
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->
