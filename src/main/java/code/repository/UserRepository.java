@@ -25,8 +25,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     String findByPhoneNumberOrEmailParam(@Param(value = "phoneNumber") String phoneNumber,
                                          @Param(value = "email") String email);
 
-    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_email = ?1 and user_password = ?2 ;")
-    String findUserByEmailAndPassword(String email, String password);
+//    @Query(nativeQuery = true, value = "SELECT user_id,user_email FROM user WHERE user_email = ?1 and user_password = ?2 ;")
+    UserEntity findUserByEmail(String email);
 
     UserEntity findUserByName(String name);
 

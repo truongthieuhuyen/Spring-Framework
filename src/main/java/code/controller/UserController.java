@@ -16,7 +16,7 @@ public class UserController {
     UserService userService;
 
     /*
-    * REGISTER PAGE*/
+     * REGISTER PAGE*/
     @PostMapping(value = "/register")
     public String register(@RequestBody RegisterRequest regisRequest) throws Exception {
         String result = userService.registerService(regisRequest);
@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/changePass")
-    public String changePass( @RequestBody ChangePasswordRequest changePassReq,Integer userId) {
-        return userService.changePass(changePassReq,userId);
+    public String changePass(@RequestBody ChangePasswordRequest changePassReq, Integer userId) {
+        return userService.changePass(changePassReq, userId);
     }
 
     @DeleteMapping(value = "/deleteUser")
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/userInfo")
-    public Object getUserDetail(@RequestBody Integer userId) throws Exception {
+    public Object getUserDetail(@RequestBody Integer userId, @RequestParam(value = "token") String token) throws Exception {
         UserInfoResponse show = userService.getUserInfo(userId);
         return show;
     }

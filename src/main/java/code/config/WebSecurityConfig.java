@@ -42,10 +42,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/", "login", "logout","/register").permitAll(); //no authentication required
 
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/changePass","/userInfo")
-                .access( "hasAnyRole('role_member','role_admin')");
+                .access( "hasAnyRole('ROLE_ADMIN','ROLE_MEMBER','ROLE_VIP_MEMBER')");
 
         http.authorizeRequests().antMatchers(HttpMethod.GET,"/deleteUser")
-                .access("hasRole('role_admin')");
+                .access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");// access denied
 
