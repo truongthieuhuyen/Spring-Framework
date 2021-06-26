@@ -12,11 +12,10 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    List<UserEntity> findAllByUserId(Integer userId);
 
     UserEntity findUserByUserId(Integer userId);
 
-    UserEntity findUserByPhoneNumber(String phoneNumber);
+//    UserEntity findUserByPhoneNumber(String phoneNumber);
 
     @Query(nativeQuery = true, value = "SELECT * FROM user WHERE user_id=?1 ")
     UserEntity findByUserId(Integer userId);
@@ -30,7 +29,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     UserEntity findUserByName(String name);
 
-    //câu query update luôn
 //    @Transactional
 //    @Modifying
 //    @Query(nativeQuery = true, value = "UPDATE user SET user_password = ?1 WHERE user_id = ?2")

@@ -6,6 +6,8 @@ import code.entity.BookEntity;
 import code.entity.PublishedBookEntity;
 import code.repository.BookRepository;
 import code.repository.PublishedBookRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Service
 public class BookService {
+    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
 
     @Autowired
     BookRepository bookRepository;
@@ -28,6 +31,9 @@ public class BookService {
      * find book by name
      * */
     public BookListResponse getBookByTitle(String title, String orderBy, String order, Integer pageNum) {
+        logger.info("========== Start received request getBookByTittle : title {}, orderBy {}, order {}, page {}", title, orderBy, order, pageNum
+        );
+
         /*Sort sort = Sort.by(Sort.Direction.ASC, orderBy);
         if (order.equals("DESC")) {
             sort = Sort.by(Sort.Direction.DESC, orderBy);
@@ -37,11 +43,13 @@ public class BookService {
         List<BookEntity> search = bookRepository.findNativeAllByTitle(title, orderBy, order, 2 * pageNum);
 
         if (!search.isEmpty()) {
+
             response.setCode(200);
             response.setMessage("OK");
             response.setData(search);
             return response;
         }
+        logger.error("No results found with input title {}",title);
         response.setCode(-1);
         response.setMessage("No result");
         return response;
@@ -80,7 +88,7 @@ public class BookService {
      * Update book
      * */
     @Transactional
-    public String updateBookService(String description, String picture, Double price, Integer categoryId, Integer bookId , Integer userId) {
+    public String updateBookService(String description, String picture, Double price, Integer categoryId, Integer bookId, Integer userId) {
         //check in DB
         List<PublishedBookEntity> ub = publishedBookRepository.findAllByBookIdAndUserId(bookId, userId);
         if (ub == null) {

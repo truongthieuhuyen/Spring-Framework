@@ -6,6 +6,8 @@ import code.controller.request.RegisterRequest;
 import code.controller.response.UserInfoResponse;
 import code.entity.UserEntity;
 import code.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +28,8 @@ import java.util.regex.Pattern;
 public class UserService implements UserDetailsService {
     private static final Integer expiredTime = 2 * 60;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     //    @Autowired
     //    Connection connection;
     @Autowired
@@ -38,31 +42,30 @@ public class UserService implements UserDetailsService {
      * API Register
      * */
     public String registerService(RegisterRequest regisRequest) {
+        logger.info("========== Start received register request : email {}, password {}, phoneNumber {}, name {}",
+                regisRequest.getEmail(), regisRequest.getPassword(), regisRequest.getPhoneNumber(), regisRequest.getName());
+
         //check validate phone
         String PHONE_PATTERN = "^((84|0)[3|5|7|8|9])+([0-9]{8})$";
         if (!regisRequest.getPhoneNumber().matches(PHONE_PATTERN)) {
+            logger.error("Phone number {} is not right", regisRequest.getPhoneNumber());
             return "Phone number must have '84' or '0' at the beginning." +
                     "Requires entering the correct phone number.";
         }
-        /*if (regisRequest.getPhoneNumber() == null || regisRequest.getPhoneNumber().isEmpty() || regisRequest.getPhoneNumber().length() != 10) {
-            return "Invalid phone number"; // dùng regex
-        }*/
+
         //check validate email
         String EMAIL_PATTERN = "^[a-zA-Z][\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-        /* if (!StringUtils.hasText(regisRequest.getEmail()) || !regisRequest.getEmail().endsWith("@gmail.com")) {
-            return "Email must contains '@gmail.com'";
-        }*/
         if (!Pattern.matches(EMAIL_PATTERN, regisRequest.getEmail())) {
+            logger.error("Email {} is not right", regisRequest.getEmail());
             return "Email must contains '@', can lower/upper case letters and '-'. ";
         }
+
         //check validate password
         String PASS_PATTERN = "^[a-zA-Z0-9]{8,20}$";
         if (!Pattern.matches(PASS_PATTERN, regisRequest.getPassword())) {
+            logger.error("Password {} is not right", regisRequest.getPassword());
             return "Password must contain at least 8 characters, can lower/upper case letters, numeric characters. ";
         }
-        /*if (regisRequest.getPassword().length() < 8 || !StringUtils.hasText(regisRequest.getPassword())) {
-            return "Password must contains at least 8 characters";
-        }*/
 
         //check DB if the user has existed
         String ur = userRepository.findByPhoneNumberOrEmailParam(regisRequest.getPhoneNumber(), regisRequest.getEmail());
@@ -81,10 +84,12 @@ public class UserService implements UserDetailsService {
         UserEntity uname = userRepository.findUserByName(regisRequest.getName());
         // check user_name existed or not
         if (uname != null) {
-            return "user name has been used";
+            logger.error("User name {} has been used", regisRequest.getName());
+            return "User name has been used";
         }
         userRepository.save(insertUser);
 
+        logger.info("========== End request register with name {}", regisRequest.getName());
         return "Register successful";
     }
 
@@ -93,17 +98,21 @@ public class UserService implements UserDetailsService {
      * API login
      */
     public String loginService(LoginRequest loginRequest) {
+        logger.info("========== Start received login request: email {}, password {} .", loginRequest.getEmail(), loginRequest.getPassword());
+
         //check validate email & password
         if (loginRequest.getEmail().isEmpty() || loginRequest.getPassword().isEmpty()) {
+            logger.error("Password or email {} is empty", loginRequest.getEmail());
             return "Please enter your password and email ";
         }
+
         //check DB if user has existed
         UserEntity ul = userRepository.findUserByEmail(loginRequest.getEmail());
         //            logger.error("Password {} not match with username {}", loginRequest.getPassword(), loginRequest.getUserName());
         if (ul != null) {
             boolean check = bCryptPasswordEncoder.matches(loginRequest.getPassword(), ul.getPassword());
-            if (!check){
-//                logger.error("Password {} not match with username {}", loginRequest.getPassword(), loginRequest.getUserName());
+            if (!check) {
+                logger.error("Password {} not match with name {}", loginRequest.getPassword(), ul.getName());
                 throw new RuntimeException("Wrong password");
             }
 
@@ -112,8 +121,10 @@ public class UserService implements UserDetailsService {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis() + expiredTime * 1000);
             ul.setExpiredTime(timestamp);//save expired time to DB
             userRepository.save(ul);
+            logger.info("========== Login success with email {} .", loginRequest.getEmail());
             return "Login Successful";
         }
+        logger.error("Email {} not found", loginRequest.getEmail());
         return "Login failed\n Wrong email or password";
     }
 
@@ -122,17 +133,23 @@ public class UserService implements UserDetailsService {
      * */
 
     public String changePass(ChangePasswordRequest changePassReq, Integer userId) {
+        logger.info("========== Start received change password request: email {}, password {} .", changePassReq.getEmail(), changePassReq.getPassword());
+
         // Find user in DB
         UserEntity cp = userRepository.findUserByUserId(userId);
         if (cp != null) {
             String PASS_PATTERN = "^[a-zA-Z0-9]{8,20}$";
             if (!Pattern.matches(PASS_PATTERN, changePassReq.getPassword())) {
+                logger.error("Password input is not accepted ");
                 return "Password must contain at least 8 characters, can lower/upper case letters, numeric characters. ";
             }
             cp.setPassword(bCryptPasswordEncoder.encode(changePassReq.getPassword()));
             userRepository.save(cp);
+            logger.info("Password of user name {} has been changed",cp.getName());
+            logger.info("========== End request with name {}",cp.getName());
             return "Your password has been changed";
         }
+        logger.error("User with email {} can't found",cp.getEmail());
         return "User does not exist ";
     }
 
@@ -140,11 +157,15 @@ public class UserService implements UserDetailsService {
      * delete user
      * */
     public String deleteUser(Integer userId) {
+        logger.info("========== Start received delete user request: Id {} .",userId);
+
         UserEntity du = userRepository.findUserByUserId(userId);
         if (du != null) {
             userRepository.delete(du);
+            logger.info("========== End request with id {}",userId);
             return "User has been deleted";
         }
+        logger.error("User id not found",userId);
         return "User does not exist ";
     }
 
@@ -152,17 +173,21 @@ public class UserService implements UserDetailsService {
     API xem thông tin user
     */
     public UserInfoResponse getUserInfo(Integer userId) {
+        logger.info("========== Start received getInfo request: Id {}",userId);
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
         UserInfoResponse response = new UserInfoResponse();
         UserEntity data = userRepository.findByUserId(userId);
-        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         if (data.getExpiredTime().before(now)) {
-            throw new RuntimeException("Token has expired");
+            logger.error("Token of name {} has expired ",data.getName());
+            throw new RuntimeException("Login session expired ");
         }
         data.setPassword("****");
         response.setUserData(data);
         response.setCode(200);
         response.setMessage("Success");
+        logger.info("========== End request with id {}",userId);
         return response;
 
     }
