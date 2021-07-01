@@ -22,12 +22,12 @@ public class BookController {
 
     @PostMapping(value = "/addBook")
     public String addNewBook(@RequestBody AddBookRequest requests, Integer userId) {
-        return bookService.addNewBookService(requests,userId);
+        return bookService.addNewBookService(requests, userId);
     }
 
     @PutMapping(value = "/updateBook")
-    public String updateBook( String description, String picture, Double price,@RequestBody Integer categoryId, Integer bookId, Integer userId) {
-        return bookService.updateBookService(description,picture,price,categoryId,bookId,userId);
+    public String updateBook(String description, String picture, Double price, @RequestBody Integer categoryId, Integer bookId, Integer userId) {
+        return bookService.updateBookService(description, picture, price, categoryId, bookId, userId);
     }
 //    @PostMapping(value = "/testAddBook")
 //    public String testNewBook(String title, String author) {
@@ -35,7 +35,7 @@ public class BookController {
 //    }
 
     @DeleteMapping(value = "deleteBook")
-    public String deleteBook(Integer publishedId, Integer bookId){
-        return bookService.deleteBookService(publishedId,bookId);
+    public String deleteBook(Integer publishedId, Integer userId, Integer bookId) {
+        return bookService.deleteBookService(publishedId, userId, bookId);
     }
 }

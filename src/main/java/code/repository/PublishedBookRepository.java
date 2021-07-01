@@ -23,7 +23,7 @@ public interface PublishedBookRepository extends JpaRepository<PublishedBookEnti
                                     @Param("categoryId") Integer categoryId,
                                     @Param("bookId") Integer bookId);
 
-    List<PublishedBookEntity> findByPublishedId(Integer publishedId);
+    List<PublishedBookEntity> findByUserIdAndBookId(Integer userId, Integer bookId);
 
     @Modifying
     @Query(nativeQuery = true,value = "delete from published_book where published_id = ?1 ;")

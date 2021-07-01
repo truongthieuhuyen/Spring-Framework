@@ -50,9 +50,9 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-    @GetMapping(value = "/userInfo")
-    public Object getUserDetail(@RequestBody Integer userId, @RequestParam(value = "token") String token) throws Exception {
-        UserInfoResponse show = userService.getUserInfo(userId);
+    @GetMapping(value = "/userInfo/{name}")
+    public Object getUserDetail( Integer userId,@PathVariable String name) {
+        UserInfoResponse show = userService.getUserInfo(userId, name);
         return show;
     }
 
